@@ -1,24 +1,34 @@
 package com.example.pizzaparty;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+    public final int SLICES_PER_PIZZA = 8;
+
+    private EditText mNumAttendEditText;
+    private TextView mNumPizzasTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        mNumAttendEditText = findViewById(R.id.num_attend_edit_text);
+        mNumPizzasTextView = findViewById(R.id.num_pizzas_text_view);
+    }
+
+    public void calculateClick(View view) {
+        String numAttendStr = mNumAttendEditText.getText().toString();
+        int numAttend = Integer.parseInt(numAttendStr);
+
+        int slicesPerPerson = 4;
+        int totalPizzas = (int) Math.ceil(numAttend * slicesPerPerson /
+                (double) SLICES_PER_PIZZA);
+        mNumPizzasTextView.setText("Total pizzas: " + totalPizzas);
     }
 }
