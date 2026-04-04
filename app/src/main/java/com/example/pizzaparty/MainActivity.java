@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,10 +16,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView mNumPizzasTextView;
     private RadioGroup mHowHungryRadioGroup;
 
+    private final static String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate was called");
 
         // Assign the widgets to fields
         mNumAttendEditText = findViewById(R.id.num_attend_edit_text);
@@ -32,7 +36,13 @@ public class MainActivity extends AppCompatActivity {
         String numAttendStr = mNumAttendEditText.getText().toString();
 
         // Convert the text into an integer
-        int numAttend = Integer.parseInt(numAttendStr);
+        int numAttend;
+        try {
+            numAttend = Integer.parseInt(numAttendStr);
+        }
+        catch (NumberFormatException ex) {
+            numAttend = 0;
+        }
 
         // Determine how many slices on average each person will eat
         int slicesPerPerson = 0;
