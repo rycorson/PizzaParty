@@ -7,10 +7,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final String KEY_TOTAL_PIZZAS = "totalPizzas";
+    private int mTotalPizzas;
 
     public final static int SLICES_PER_PIZZA = 8;
 
@@ -33,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         mNumPizzasTextView = findViewById(R.id.num_pizzas_text_view);
         mHowHungryRadioGroup = findViewById(R.id.hungry_radio_group);
 
+        if (savedInstanceState != null) {
+            mTotalPizzas = savedInstanceState.getInt(KEY_TOTAL_PIZZAS);
+        }
+
 /* ADDS optional TextWatcher
         mNumAttendEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -50,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
 
         });*/
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_TOTAL_PIZZAS, mTotalPizzas);
     }
 
     public void calculateClick(View view) {
@@ -85,10 +99,12 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the number of pizzas needed
         PizzaCalculator calc = new PizzaCalculator(numAttend, hungerLevel);
-        int totalPizzas = calc.getTotalPizzas();
+        mTotalPizzas = calc.getTotalPizzas();
+        displayTotal();
+    }
 
-        // Place totalPizzas into the string resource and display
-        String totalText = getString(R.string.total_pizzas_num, totalPizzas);
+    private void displayTotal() {
+        String totalText = getString(R.string.total_pizzas_num, mTotalPizzas);
         mNumPizzasTextView.setText(totalText);
     }
 }
