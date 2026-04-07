@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             mTotalPizzas = savedInstanceState.getInt(KEY_TOTAL_PIZZAS);
+            displayTotal();
         }
 
 /* ADDS optional TextWatcher
